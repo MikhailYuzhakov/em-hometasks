@@ -1,0 +1,31 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: table-generator
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/airport
+    username: postgres
+    password: postgres
+
+  jpa:
+    # Основная настройка для hbm2ddl
+    hibernate:
+      # update: обновляет схему, не удаляя данные (лучше для разработки)
+      # create: пересоздает таблицы при каждом запуске (удаляет данные)
+      # create-drop: создает при запуске, удаляет при остановке
+      # validate: только проверяет схему (для продакшна)
+      ddl-auto: update
+      default_schema: bookings
+
+    # Показывать SQL-запросы в консоли
+    show-sql: true
+
+    # Дополнительные свойства Hibernate
+    properties:
+      hibernate:
+        format_sql: true       # Красивое форматирование SQL в логах
+        # dialect: org.hibernate.dialect.PostgreSQLDialect # Обычно Spring определяет сам

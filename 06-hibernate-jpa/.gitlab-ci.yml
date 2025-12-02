@@ -1,0 +1,49 @@
+stages:
+  - test
+  - build_docker
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+run_tests_and_build:
+  stage: test
+  image: maven:3.8-openjdk-17
+  services:
+    - docker:20.10.16-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    TESTCONTAINERS_HOST_OVERRIDE: docker
+  before_script:
+    - apt-get update && apt-get install -y docker.io  # ← УСТАНАВЛИВАЕМ DOCKER CLIENT ДЛЯ DEBIAN
+    - docker version  # ← ПРОВЕРЯЕМ УСТАНОВКУ
+  script:
+    - echo "Запускаем тесты и сборку для MR в dev..."
+    - mvn clean package -Dspring.profiles.active=test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev"'
+
+build_and_push_docker:
+  stage: build_docker
+  image: docker:20.10.16
+  services:
+    - docker:20.10.16-dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    IMAGE_NAME: $CI_PROJECT_NAME
+  before_script:
+    - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
+  script:
+    - echo "Собираем Docker образ..."
+    - TAG=$CI_COMMIT_SHORT_SHA
+    - docker build -t "$DOCKER_HUB_USER/$IMAGE_NAME:$TAG" .
+    - echo "Пушим образ в Docker Hub с тегом $TAG..."
+    - docker push "$DOCKER_HUB_USER/$IMAGE_NAME:$TAG"
+
+    - echo "Обновляем тег 'latest'..."
+    - docker tag "$DOCKER_HUB_USER/$IMAGE_NAME:$TAG" "$DOCKER_HUB_USER/$IMAGE_NAME:latest"
+    - docker push "$DOCKER_HUB_USER/$IMAGE_NAME:latest"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
