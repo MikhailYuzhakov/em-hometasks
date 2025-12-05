@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  keycloak:
+    image: keycloak/keycloak:21.1.0
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    command: start-dev
+    ports:
+      - "8080:8080"
+
+  spring-app:
+    build: .
+    container_name: spring-keycloak-demo
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+      - keycloak
