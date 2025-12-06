@@ -19,8 +19,9 @@ services:
     image: logstash:8.10.1
     container_name: logstash
     volumes:
-      - ./logs:/logs
+      - app_logs:/logs
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./certs:/usr/share/logstash/config/certs
     ports:
       - "5044:5044"
     networks:
@@ -39,13 +40,30 @@ services:
   app:
     build: .
     container_name: spring-app
+    volumes:
+      - app_logs:/logs
     ports:
-      - "8080:8080"
+      - "8081:8081"
     networks:
       - elk
     depends_on:
       - logstash
 
+  filebeat:
+    image: elastic/filebeat:8.10.0
+    container_name: filebeat
+    volumes:
+      - app_logs:/logs
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+      - logstash
+
 networks:
   elk:
     driver: bridge
+
+volumes:
+  app_logs:
