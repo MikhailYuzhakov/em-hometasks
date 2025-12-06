@@ -1,4 +1,4 @@
-package com.example.keycloakdemo;
+package com.example.keycloakdemo.service;
 
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;

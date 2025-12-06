@@ -1,5 +1,5 @@
 
-package com.example.keycloakdemo;
+package com.example.keycloakdemo.controller;
 
 import java.io.IOException;
 

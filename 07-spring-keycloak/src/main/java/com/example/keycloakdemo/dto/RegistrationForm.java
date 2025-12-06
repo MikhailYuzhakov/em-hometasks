@@ -1,4 +1,4 @@
-package com.example.keycloakdemo;
+package com.example.keycloakdemo.dto;
 
 import java.util.List;
 

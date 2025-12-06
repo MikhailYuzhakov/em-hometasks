@@ -1,5 +1,7 @@
-package com.example.keycloakdemo;
+package com.example.keycloakdemo.controller;
 
+import com.example.keycloakdemo.service.KeycloakAdminService;
+import com.example.keycloakdemo.dto.RegistrationForm;
 import org.keycloak.representations.idm.GroupRepresentation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
