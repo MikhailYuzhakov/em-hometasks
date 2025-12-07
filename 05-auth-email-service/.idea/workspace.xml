@@ -5,45 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ccf0fdf8-0cfe-4e6b-baa3-fa524f37e9b6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/configuration/KafkaTopicConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/configuration/PasswordEncoderConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/controllers/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/dto/UserCreateDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/dto/UserRegisteredEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/dto/response/JwtAuthenticationResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/dto/response/PageResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/dto/response/SignInRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/dto/response/SignUpRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/dto/response/SuccessResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/exceptions/GlobalSecurityExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/exceptions/VerificationCodeException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/security/CustomAuthProvider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/services/Impl/AuthenticationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/services/Impl/JwtService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/utils/JwtAuthenticationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/resources/db/migrations/V2__modify_users_table.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/resources/db/migrations/V3__modify_users_table.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/resources/db/migrations/V4__modify_users_table.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/email-service/src/main/java/ru/effective_mobile/email_service/dto/UserRegisteredEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/email-service/src/main/java/ru/effective_mobile/email_service/services/EmailNotificationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/configuration/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/configuration/SecurityConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/controllers/ExceptionsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/controllers/ExceptionsHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/controllers/RestUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/controllers/RestUserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/domain/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/dto/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/dto/response/ErrorResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/dto/UserDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/services/Impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/services/Impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/ru/effective_mobile/auth_service/services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/email-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/email-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/email-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/email-service/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/email-service/src/main/java/ru/effective_mobile/email_service/services/EmailNotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/email-service/src/main/java/ru/effective_mobile/email_service/services/EmailNotificationService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,12 +23,12 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="35sYJvT9WaRBZ26g96MiuumjOeV" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -76,10 +41,10 @@
     "Maven.auth-service [verify].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "05-hometask",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/06_Projects/auth-email-service/auth-service/src/main/resources/db/migrations",
-    "project.structure.last.edited": "Project",
+    "last_opened_file_path": "D:/07_EM/01-hometasks/05-auth-email-service",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors"
