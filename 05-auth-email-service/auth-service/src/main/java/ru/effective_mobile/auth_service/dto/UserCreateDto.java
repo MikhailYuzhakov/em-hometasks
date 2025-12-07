@@ -4,13 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
 @SuperBuilder
 @Getter
 @Setter
-public class UserDto extends UserCreateDto {
-    private Long id;
-    private String role;
-    private Boolean isVerified;
+public class UserCreateDto {
+    private String email;
+    private String password;
+    private String code;
 }

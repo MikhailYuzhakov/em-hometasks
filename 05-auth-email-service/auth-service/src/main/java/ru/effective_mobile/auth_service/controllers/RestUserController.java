@@ -2,12 +2,11 @@ package ru.effective_mobile.auth_service.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.effective_mobile.auth_service.dto.response.PageResponse;
 import ru.effective_mobile.auth_service.dto.UserDto;
 import ru.effective_mobile.auth_service.services.UserService;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -15,9 +14,17 @@ import ru.effective_mobile.auth_service.services.UserService;
 public class RestUserController {
     private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        userService.saveUser(userDto);
-        return ResponseEntity.ok(userDto);
+    @GetMapping
+    public ResponseEntity<PageResponse<UserDto>> getUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+
+        PageResponse<UserDto> userPage = userService.findAll(page, size);
+        return ResponseEntity.ok(userPage);
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<UserDto> getUser(@PathVariable("email") String email) throws Exception {
+        return ResponseEntity.ok(userService.findUserByEmail(email));
     }
 }
