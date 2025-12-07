@@ -1,0 +1,37 @@
+server:
+  port: 8081
+
+keycloak:
+  auth-server-url: https://keycloak.effective-mobile.ru/
+  realm: effective-mobile
+  resource: spring-boot-client
+  admin:
+    server-url: ${keycloak.auth-server-url}
+    realm: ${keycloak.realm}
+    client-id: spring-boot-client
+    client-secret: YXdGEGzL7ax7WYfytTxJ3JkYHsaKnTad
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${keycloak.auth-server-url}realms/${keycloak.realm}/protocol/openid-connect/certs
+      client:
+        registration:
+          keycloak:
+            client-id: spring-boot-client
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8081/login/oauth2/code/keycloak
+            client-authentication-method: client_secret_post
+            client-secret: ${keycloak.admin.client-secret}
+            scope: openid,profile,email,groups
+        provider:
+          keycloak:
+            issuer-uri: ${keycloak.auth-server-url}realms/${keycloak.realm}
+            user-info-uri: ${keycloak.auth-server-url}realms/${keycloak.realm}/protocol/openid-connect/userinfo
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web.client: DEBUG

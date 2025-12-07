@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: ru.effective_mobile.short_url.controller.ShortUrlControllerTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.312 s -- in ru.effective_mobile.short_url.controller.ShortUrlControllerTest
