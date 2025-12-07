@@ -1,0 +1,4 @@
+Hello world
+This is a test file for MapReduce
+MapReduce is a powerful framework
+Hello again

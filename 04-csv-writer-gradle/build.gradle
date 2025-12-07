@@ -1,0 +1,52 @@
+plugins {
+    // 'java-library' - основной плагин для создания Java-библиотек.
+    id 'java-library'
+
+    // 'maven-publish' - плагин для публикации артефактов в Maven-репозитории.
+    id 'maven-publish'
+}
+
+group = 'ru.example'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // 'testImplementation' - зависимость только для компиляции и запуска тестов.
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+
+    // 'testRuntimeOnly' - зависимость, необходимая только во время выполнения тестов.
+    testImplementation  'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// 7. Конфигурация публикации
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        // Для примера опубликуем в локальный Maven-репозиторий (~/.m2/repository).
+        mavenLocal()
+    }
+}
