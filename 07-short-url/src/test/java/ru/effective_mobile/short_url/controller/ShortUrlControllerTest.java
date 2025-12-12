@@ -1,10 +1,10 @@
 package ru.effective_mobile.short_url.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.effective_mobile.short_url.dto.ShortenUrlRequest;
+import ru.effective_mobile.short_url.exceptions.AliasAlreadyExistsException;
 import ru.effective_mobile.short_url.exceptions.AliasNotFoundException;
 import ru.effective_mobile.short_url.services.ShortUrlService;
 
@@ -36,18 +37,17 @@ class ShortUrlControllerTest {
     @MockitoBean
     private ShortUrlService shortUrlService;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
 
     private ShortenUrlRequest request;
 
     @BeforeEach
     void setUp() {
-        objectMapper = new ObjectMapper()
-                .registerModule(new JavaTimeModule())
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         request = new ShortenUrlRequest();
         request.setOriginalUrl("http://example.com");
-        request.setExpiresAt(OffsetDateTime.now());
+        request.setExpiresAt(OffsetDateTime.now().plusHours(1)); // Исправлено на plusHours(1)
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
     @Test
@@ -64,7 +64,7 @@ class ShortUrlControllerTest {
 
     @Test
     void shortenUrl_withoutCustomAlias_returnsCreatedStatusAndGeneratedAlias() throws Exception {
-        request.setAlias("alias");
+        request.setAlias(null); // Исправлено на null
         when(shortUrlService.generateAlias(any(ShortenUrlRequest.class))).thenReturn("generatedalias");
 
         mockMvc.perform(post("/api/v1/shorten")
@@ -85,8 +85,20 @@ class ShortUrlControllerTest {
     }
 
     @Test
+    void shortenUrl_withExistingCustomAlias_returnsConflictStatus() throws Exception {
+        request.setAlias("existingalias");
+        when(shortUrlService.generateAlias(any(ShortenUrlRequest.class)))
+                .thenThrow(new AliasAlreadyExistsException("Alias 'existingalias' already exists."));
+
+        mockMvc.perform(post("/api/v1/shorten")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
     void redirectToOriginalUrl_existingAlias_redirects() throws Exception {
-        when(shortUrlService.getFullUrlByAlies("testalias")).thenReturn("http://example.com");
+        when(shortUrlService.getFullUrlByAlias("testalias")).thenReturn("http://example.com");
 
         mockMvc.perform(get("/testalias"))
                 .andExpect(status().isFound())
@@ -95,7 +107,7 @@ class ShortUrlControllerTest {
 
     @Test
     void redirectToOriginalUrl_nonExistingAlias_returnsNotFound() throws Exception {
-        when(shortUrlService.getFullUrlByAlies("nonexistent")).thenThrow(new AliasNotFoundException("nonexistent not found."));
+        when(shortUrlService.getFullUrlByAlias("nonexistent")).thenThrow(new AliasNotFoundException("nonexistent not found."));
 
         mockMvc.perform(get("/nonexistent"))
                 .andExpect(status().isNotFound());
@@ -103,7 +115,7 @@ class ShortUrlControllerTest {
 
     @Test
     void redirectToOriginalUrl_expiredAlias_returnsNotFound() throws Exception {
-        when(shortUrlService.getFullUrlByAlies("expiredalias")).thenThrow(new AliasNotFoundException("expiredalias has expired."));
+        when(shortUrlService.getFullUrlByAlias("expiredalias")).thenThrow(new AliasNotFoundException("expiredalias has expired."));
 
         mockMvc.perform(get("/expiredalias"))
                 .andExpect(status().isNotFound());

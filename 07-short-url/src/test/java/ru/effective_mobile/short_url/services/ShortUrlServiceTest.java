@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.effective_mobile.short_url.dto.ShortenUrlRequest;
 import ru.effective_mobile.short_url.entity.ShortenedUrl;
 import ru.effective_mobile.short_url.exceptions.AliasNotFoundException;
+import ru.effective_mobile.short_url.exceptions.AliasAlreadyExistsException;
 import ru.effective_mobile.short_url.repository.ShortenedUrlRepository;
 
 import java.time.OffsetDateTime;
@@ -29,6 +30,7 @@ class ShortUrlServiceTest {
 
     private ShortenUrlRequest request;
     private ShortenedUrl shortenedUrl;
+    private Integer GENERATED_ALIAS_LENGTH = 8;
 
     @BeforeEach
     void setUp() {
@@ -54,17 +56,25 @@ class ShortUrlServiceTest {
     }
 
     @Test
+    void generateAlias_withExistingCustomAlias_throwsAliasAlreadyExistsException() {
+        request.setAlias("existingalias");
+        when(repository.findByAlias("existingalias")).thenReturn(Optional.of(shortenedUrl));
+
+        assertThrows(AliasAlreadyExistsException.class, () -> shortUrlService.generateAlias(request));
+        verify(repository, never()).save(any(ShortenedUrl.class));
+    }
+
+    @Test
     void generateAlias_withoutCustomAlias_returnsGeneratedAlias() {
         request.setAlias(null);
-        when(repository.findByAlias(anyString()))
-                .thenReturn(Optional.empty()) // for the first generated alias
-                .thenReturn(Optional.of(new ShortenedUrl())); // to ensure loop breaks if alias is taken
+        when(repository.findByAlias(anyString())).thenReturn(Optional.empty());
         when(repository.save(any(ShortenedUrl.class))).thenReturn(shortenedUrl);
 
         String result = shortUrlService.generateAlias(request);
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
+        assertEquals(GENERATED_ALIAS_LENGTH, result.length());
         verify(repository, atLeastOnce()).findByAlias(anyString());
         verify(repository, times(1)).save(any(ShortenedUrl.class));
     }
@@ -73,7 +83,7 @@ class ShortUrlServiceTest {
     void getFullUrlByAlias_existingAlias_returnsOriginalUrl() {
         when(repository.findByAlias("testalias")).thenReturn(Optional.of(shortenedUrl));
 
-        String result = shortUrlService.getFullUrlByAlies("testalias");
+        String result = shortUrlService.getFullUrlByAlias("testalias");
 
         assertEquals("http://example.com", result);
     }
@@ -83,14 +93,14 @@ class ShortUrlServiceTest {
         shortenedUrl.setExpiresAt(OffsetDateTime.now().minusDays(1)); // Set expired date
         when(repository.findByAlias("testalias")).thenReturn(Optional.of(shortenedUrl));
 
-        assertThrows(AliasNotFoundException.class, () -> shortUrlService.getFullUrlByAlies("testalias"));
+        assertThrows(AliasNotFoundException.class, () -> shortUrlService.getFullUrlByAlias("testalias"));
     }
 
     @Test
     void getFullUrlByAlias_nonExistingAlias_throwsAliasNotFoundException() {
         when(repository.findByAlias("nonexistent")).thenReturn(Optional.empty());
 
-        assertThrows(AliasNotFoundException.class, () -> shortUrlService.getFullUrlByAlies("nonexistent"));
+        assertThrows(AliasNotFoundException.class, () -> shortUrlService.getFullUrlByAlias("nonexistent"));
     }
 
     @Test

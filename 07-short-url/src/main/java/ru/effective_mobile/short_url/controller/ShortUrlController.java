@@ -22,18 +22,17 @@ public class ShortUrlController {
 
     @PostMapping("/api/v1/shorten")
     public ResponseEntity<String> shortenUrl(@Valid @RequestBody ShortenUrlRequest request) {
+        log.info("Received shorten URL request for original URL: {}", request.getOriginalUrl());
         String alias = shortUrlService.generateAlias(request);
+        log.info("URL shortened successfully. Alias: {}", alias);
         return ResponseEntity.status(HttpStatus.CREATED).body(alias);
     }
 
     @GetMapping("/{alias}")
     public void redirectToOriginalUrl(@PathVariable String alias, HttpServletResponse response) throws IOException {
-        try {
-            String originalUrl = shortUrlService.getFullUrlByAlies(alias);
-            response.sendRedirect(originalUrl);
-        } catch (AliasNotFoundException e) {
-            log.warn("Alias not found or expired: {}", alias);
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
-        }
+        log.info("Received redirect request for alias: {}", alias);
+        String originalUrl = shortUrlService.getFullUrlByAlias(alias);
+        log.info("Redirecting alias {} to original URL: {}", alias, originalUrl);
+        response.sendRedirect(originalUrl);
     }
 }
