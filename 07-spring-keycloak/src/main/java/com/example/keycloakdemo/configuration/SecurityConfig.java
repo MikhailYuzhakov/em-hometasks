@@ -1,11 +1,14 @@
 package com.example.keycloakdemo.configuration;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.http.SessionCreationPolicy; // Import for SessionCreationPolicy
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
@@ -14,23 +17,33 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
-
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowSemicolon(true);
+        return firewall;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http
+            .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
-                    .requestMatchers("/register/**").permitAll() // Разрешить доступ к странице регистрации и ее подпутям
-                    .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll() // Разрешить доступ к статическим ресурсам
+                    .requestMatchers("/", "/index.html", "/register/**").permitAll() // Разрешить доступ к странице регистрации и ее подпутям
+                    .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**", "/").permitAll() // Разрешить доступ к статическим ресурсам и корневому пути
                     .anyRequest().authenticated() // Все остальные запросы требуют аутентификации
             )
             .oauth2Login(oauth2Login ->
@@ -38,7 +51,7 @@ public class SecurityConfig {
                     .userInfoEndpoint(userInfo ->
                         userInfo.oidcUserService(this.oidcUserService())
                     )
-                    .defaultSuccessUrl("/api/jira-access") // Redirect after successful login
+                    .defaultSuccessUrl("/") // Redirect to home page after successful login
             )
             .oauth2ResourceServer(oauth2ResourceServer ->
                 oauth2ResourceServer
@@ -55,18 +68,17 @@ public class SecurityConfig {
             public OidcUser loadUser(OidcUserRequest userRequest) {
                 OidcUser oidcUser = delegate.loadUser(userRequest);
                 
-                // Extract groups from UserInfo attributes
+                // Extract roles from realm_access.roles claim
                 @SuppressWarnings("unchecked")
-                List<String> groups = (List<String>) oidcUser.getAttributes().get("groups");
-    
-                Set<GrantedAuthority> combinedAuthorities = new HashSet<>();
-                
+                List<String> realmRoles = (List<String>) oidcUser.getIdToken().getClaimAsMap("realm_access").get("roles");
+                log.info("realm.roles = {}", realmRoles.toString());
+
                 // Add existing authorities from the delegate's OidcUser (scopes like OIDC_USER, SCOPE_email, etc.)
-                combinedAuthorities.addAll(oidcUser.getAuthorities());
+                Set<GrantedAuthority> combinedAuthorities = new HashSet<>(oidcUser.getAuthorities());
     
-                // Extract and add group-based authorities
-                if (groups != null) {
-                    groups.forEach(group -> combinedAuthorities.add(new SimpleGrantedAuthority("GROUP_" + group.replace("/", ""))));
+                // Extract and add role-based authorities
+                if (realmRoles != null) {
+                    realmRoles.forEach(role -> combinedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase())));
                 }
     
                 // Return a new OidcUser with the combined authorities
@@ -78,8 +90,8 @@ public class SecurityConfig {
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("groups"); // Keycloak groups claim
-        grantedAuthoritiesConverter.setAuthorityPrefix("GROUP_");
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("realm_access.roles"); // Keycloak realm roles claim
+        grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);

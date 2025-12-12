@@ -1,4 +1,4 @@
-package com.example.keycloakdemo.dto;
+package com.example.keycloakdemo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,9 +28,8 @@ public class RegistrationForm {
     @Email(message = "Invalid email format")
     private String email;
 
-    private List<String> roles; // Changed from groups to roles
+    private List<String> roles;
 
-    // Custom getter for email generation
     public String getEmail() {
         if (firstName != null && lastName != null) {
             return (firstName.toLowerCase() + "." + lastName.toLowerCase() + "@test.com");

@@ -106,15 +106,12 @@
             <label for="password">Password:</label>
             <input type="password" id="password" th:field="*{password}" required/>
         </div>
+        <!-- Email field removed as it is now auto-generated -->
         <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" th:field="*{email}" required/>
-        </div>
-        <div class="form-group">
-            <label>Select Groups:</label>
-            <div th:each="groupName : ${groups}" class="checkbox-group">
-                <input type="checkbox" th:id="${groupName}" th:name="groups" th:value="${groupName}"/>
-                <label th:for="${groupName}" th:text="${groupName}"></label>
+            <label>Select Roles:</label>
+            <div th:each="roleName : ${roles}" class="checkbox-group">
+                <input type="checkbox" th:id="${roleName}" th:name="roles" th:value="${roleName}"/>
+                <label th:for="${roleName}" th:text="${roleName}"></label>
             </div>
         </div>
         <button type="submit">Register</button>

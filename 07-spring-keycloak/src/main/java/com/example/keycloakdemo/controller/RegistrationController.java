@@ -2,13 +2,18 @@ package com.example.keycloakdemo.controller;
 
 import com.example.keycloakdemo.service.KeycloakAdminService;
 import com.example.keycloakdemo.dto.RegistrationForm;
-import org.keycloak.representations.idm.GroupRepresentation;
+import com.example.keycloakdemo.KeycloakServiceException;
+import org.keycloak.representations.idm.RoleRepresentation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import jakarta.validation.Valid;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +25,8 @@ public class RegistrationController {
 
     private final KeycloakAdminService keycloakAdminService;
 
-    private static final List<String> ALLOWED_GROUPS = Arrays.asList("jira-access", "gitlab-access", "grafana-access");
+    @Value("${app.roles.allowed}")
+    private List<String> allowedRoles;
 
     public RegistrationController(KeycloakAdminService keycloakAdminService) {
         this.keycloakAdminService = keycloakAdminService;
@@ -29,34 +35,43 @@ public class RegistrationController {
     @GetMapping
     public String showRegistrationForm(Model model) {
         model.addAttribute("registrationForm", new RegistrationForm());
-        // Filter groups to display only allowed ones
-        List<GroupRepresentation> allGroups = keycloakAdminService.getAllGroups();
-        model.addAttribute("groups", allGroups.stream()
-                .map(GroupRepresentation::getName)
-                .filter(ALLOWED_GROUPS::contains) // Filter to only show allowed groups
+        List<RoleRepresentation> allRoles = keycloakAdminService.getAllRoles();
+        model.addAttribute("roles", allRoles.stream()
+                .map(RoleRepresentation::getName)
+                .filter(allowedRoles::contains) // Filter to only show allowed roles
                 .collect(Collectors.toList()));
         return "register";
     }
 
     @PostMapping
-    public String processRegistration(@ModelAttribute RegistrationForm registrationForm, Model model) {
+    public String processRegistration(@Valid @ModelAttribute("registrationForm") RegistrationForm registrationForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("error", "Validation errors occurred.");
+            List<RoleRepresentation> allRoles = keycloakAdminService.getAllRoles();
+            model.addAttribute("roles", allRoles.stream()
+                    .map(RoleRepresentation::getName)
+                    .filter(allowedRoles::contains)
+                    .collect(Collectors.toList()));
+            return "register";
+        }
+
         try {
             keycloakAdminService.createUser(
                     registrationForm.getUsername(),
                     registrationForm.getPassword(),
-                    registrationForm.getEmail(), // Email is now generated in RegistrationForm
+                    registrationForm.getEmail(), 
                     registrationForm.getFirstName(),
                     registrationForm.getLastName(),
-                    registrationForm.getGroups()
+                    registrationForm.getRoles()
             );
             model.addAttribute("message", "User registered successfully!");
             return "redirect:/register?success";
-        } catch (Exception e) {
+        } catch (KeycloakServiceException e) {
             model.addAttribute("error", "Error registering user: " + e.getMessage());
-            List<GroupRepresentation> allGroups = keycloakAdminService.getAllGroups();
-            model.addAttribute("groups", allGroups.stream()
-                    .map(GroupRepresentation::getName)
-                    .filter(ALLOWED_GROUPS::contains)
+            List<RoleRepresentation> allRoles = keycloakAdminService.getAllRoles();
+            model.addAttribute("roles", allRoles.stream()
+                    .map(RoleRepresentation::getName)
+                    .filter(allowedRoles::contains)
                     .collect(Collectors.toList()));
             return "register";
         }

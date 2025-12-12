@@ -9,7 +9,7 @@ keycloak:
     server-url: ${keycloak.auth-server-url}
     realm: ${keycloak.realm}
     client-id: spring-boot-client
-    client-secret: YXdGEGzL7ax7WYfytTxJ3JkYHsaKnTad
+    client-secret: 7WFhXNcEMxsvHQYVX1EVkhePyzaWr0yU
 
 spring:
   security:
@@ -35,3 +35,9 @@ logging:
   level:
     org.springframework.security: DEBUG
     org.springframework.web.client: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    org.keycloak: DEBUG
+
+app:
+  roles:
+    allowed: ADMIN,USER,MODERATOR
