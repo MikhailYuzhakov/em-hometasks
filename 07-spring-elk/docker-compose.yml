@@ -1,11 +1,14 @@
 version: '3.7'
 services:
   elasticsearch:
-    image: elastic/elasticsearch:8.10.0
+    image: elastic/elasticsearch:8.10.1
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
+      - ELASTIC_PASSWORD=changeme
+      - ELASTIC_USERNAME=elastic
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ulimits:
       memlock:
         soft: -1
@@ -40,25 +43,11 @@ services:
   app:
     build: .
     container_name: spring-app
-    volumes:
-      - app_logs:/logs
     ports:
       - "8081:8081"
     networks:
       - elk
     depends_on:
-      - logstash
-
-  filebeat:
-    image: elastic/filebeat:8.10.0
-    container_name: filebeat
-    volumes:
-      - app_logs:/logs
-      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
-    networks:
-      - elk
-    depends_on:
-      - elasticsearch
       - logstash
 
 networks:
