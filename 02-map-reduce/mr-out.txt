@@ -1,0 +1,17 @@
+Another	1
+Goodbye	1
+Hello	3
+MapReduce	4
+This	1
+a	2
+again	1
+datasets	1
+file	2
+for	1
+framework	1
+is	2
+large	1
+powerful	1
+processes	1
+test	2
+world	2

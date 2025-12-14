@@ -1,0 +1,7 @@
+CREATE TABLE shortened_urls (
+    id BIGSERIAL PRIMARY KEY,
+    original_url VARCHAR(2048) NOT NULL,
+    alias VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    expires_at TIMESTAMP WITH TIME ZONE
+);

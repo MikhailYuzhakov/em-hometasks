@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Панель управления</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 300px;
+        }
+
+        a.button {
+            display: block;
+            text-decoration: none;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.2s, opacity 0.2s;
+            text-align: center;
+        }
+
+        a.button:hover {
+            transform: scale(1.02);
+            opacity: 0.9;
+        }
+
+        /* Цвета кнопок */
+        .grafana { background-color: #F05A28; } /* Оранжевый Grafana */
+        .jira { background-color: #0052CC; }    /* Синий Jira */
+        .gitlab { background-color: #FC6D26; }  /* Оранжево-красный GitLab */
+        .register { background-color: #28a745; } /* Зеленый (стандарт для регистрации) */
+
+        .logout {
+            margin-top: 30px;
+            color: #666;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Панель управления</h1>
+    <p style="margin-bottom: 20px; color: #666;">Выберите действие:</p>
+
+    <div class="btn-group">
+        <!-- Ссылка на Grafana -->
+        <a href="/api/grafana-access" class="button grafana">
+            Grafana Access
+        </a>
+
+        <!-- Ссылка на Jira -->
+        <a href="/api/jira-access" class="button jira">
+            Jira Access
+        </a>
+
+        <!-- Ссылка на GitLab -->
+        <a href="/api/gitlab-access" class="button gitlab">
+            GitLab Access
+        </a>
+
+        <!-- Разделитель для визуального удобства (опционально) -->
+        <div style="height: 10px;"></div>
+
+        <!-- Ссылка на Регистрацию -->
+        <a href="/register" class="button register">
+            Регистрация пользователя
+        </a>
+    </div>
+
+    <!-- Кнопка выхода -->
+    <div style="margin-top: 20px;">
+        <a href="/logout" class="logout">Выйти из системы</a>
+    </div>
+</div>
+
+</body>
+</html>

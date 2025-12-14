@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>EmptyProject</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <developers>
+        <developer>
+            <id>yuzhakovmihail</id>
+            <name>Yuzhakov Mikhail</name>
+            <email>yuzhakovmihail@example.com</email>
+            <url>http://www.example.com/yuzhakovmihail</url>
+            <organization>EM</organization>
+            <organizationUrl>http://www.example.com</organizationUrl>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>Russia/Moscow</timezone>
+        </developer>
+        <developer>
+            <id>asmithee</id>
+            <name>Alan Smithee</name>
+            <email>asmithee@example.com</email>
+            <organization>ACME</organization>
+            <roles>
+                <role>tester</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <build>
+        <plugins>
+            <!-- Подключаем наш созданный плагин -->
+            <plugin>
+                <groupId>org.plugin</groupId>
+                <artifactId>MavenPlugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <!-- Привязываем выполнение цели 'info' к фазе 'validate' жизненного цикла Maven -->
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>info</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

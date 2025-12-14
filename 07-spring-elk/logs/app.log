@@ -1,0 +1,49 @@
+2024-12-03T09:50:30.901+03:00  INFO 85858 --- [main] com.example.Application                  : Starting Application using Java 22 with PID 85858 (/Users/artem/Downloads/spring-elk-hello-world/target/classes started by artem in /Users/artem/Downloads/spring-elk-hello-world)
+2024-12-03T09:50:30.902+03:00  INFO 85858 --- [main] com.example.Application                  : No active profile set, falling back to 1 default profile: "default"
+2024-12-03T09:50:31.276+03:00  INFO 85858 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-12-03T09:50:31.281+03:00  INFO 85858 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-03T09:50:31.281+03:00  INFO 85858 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.12]
+2024-12-03T09:50:31.313+03:00  INFO 85858 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-12-03T09:50:31.313+03:00  INFO 85858 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 394 ms
+2024-12-03T09:50:31.440+03:00  INFO 85858 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-12-03T09:50:31.443+03:00  INFO 85858 --- [main] com.example.Application                  : Started Application in 0.709 seconds (process running for 1.722)
+2024-12-03T09:50:37.050+03:00  INFO 85858 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-12-03T09:50:37.051+03:00  INFO 85858 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-12-03T09:50:37.053+03:00  INFO 85858 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-12-03T09:50:37.070+03:00  INFO 85858 --- [http-nio-8080-exec-2] com.example.HelloWorldController         : Hello World endpoint was called
+2024-12-03T09:58:52.356+03:00  INFO 85858 --- [http-nio-8080-exec-4] com.example.HelloWorldController         : Hello World endpoint was called
+2025-12-06T12:09:20.605+03:00  INFO 11436 --- [main] com.example.Application                  : Starting Application using Java 17.0.11 with PID 11436 (D:\07_EM\01-hometasks\07-spring-elk\target\classes started by mihay in D:\07_EM\01-hometasks\07-spring-elk)
+2025-12-06T12:09:20.613+03:00  INFO 11436 --- [main] com.example.Application                  : No active profile set, falling back to 1 default profile: "default"
+2025-12-06T12:09:21.743+03:00  INFO 11436 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2025-12-06T12:09:21.751+03:00  INFO 11436 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-06T12:09:21.752+03:00  INFO 11436 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.12]
+2025-12-06T12:09:21.931+03:00  INFO 11436 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-06T12:09:21.932+03:00  INFO 11436 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1239 ms
+2025-12-06T12:09:22.362+03:00  WARN 11436 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-12-06T12:09:22.368+03:00  INFO 11436 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-12-06T12:09:22.385+03:00  INFO 11436 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-12-06T12:09:22.410+03:00 ERROR 11436 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2025-12-06T12:09:59.170+03:00  INFO 13296 --- [main] com.example.Application                  : Starting Application using Java 17.0.11 with PID 13296 (D:\07_EM\01-hometasks\07-spring-elk\target\classes started by mihay in D:\07_EM\01-hometasks\07-spring-elk)
+2025-12-06T12:09:59.172+03:00  INFO 13296 --- [main] com.example.Application                  : No active profile set, falling back to 1 default profile: "default"
+2025-12-06T12:10:00.227+03:00  INFO 13296 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2025-12-06T12:10:00.236+03:00  INFO 13296 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-06T12:10:00.237+03:00  INFO 13296 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.12]
+2025-12-06T12:10:00.354+03:00  INFO 13296 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-06T12:10:00.355+03:00  INFO 13296 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1118 ms
+2025-12-06T12:10:00.790+03:00  INFO 13296 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2025-12-06T12:10:00.807+03:00  INFO 13296 --- [main] com.example.Application                  : Started Application in 2.125 seconds (process running for 2.508)
