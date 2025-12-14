@@ -2,11 +2,9 @@ package com.example.keycloakdemo.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
 import java.util.List;
 
 @Data
